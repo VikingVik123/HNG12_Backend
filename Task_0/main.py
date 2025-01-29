@@ -18,7 +18,7 @@ app.add_middleware(
 )
 
 email = "ucodimmegwa@gmail.com"
-github_url = "https://github.com/VikingVik123/HNG12_Backend.git"
+github_url = "https://github.com/VikingVik123/HNG12_Backend"
 
 @app.get("/")
 async def fetch_details():
