@@ -20,6 +20,6 @@ app.add_middleware(
 email = "ucodimmegwa@gmail.com"
 github_url = "https://github.com/VikingVik123/HNG12_Backend.git"
 
-@app.get("/stats")
+@app.get("/")
 async def fetch_details():
     return {"email": email, "current_datetime": datetime.now().isoformat() + "Z", "github": github_url}
