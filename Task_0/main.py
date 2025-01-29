@@ -22,4 +22,4 @@ github_url = "https://github.com/VikingVik123/HNG12_Backend"
 
 @app.get("/")
 async def fetch_details():
-    return {"email": email, "current_datetime": datetime.now().isoformat() + "Z", "github": github_url}
+    return {"email": email, "current_datetime": datetime.now().isoformat() + "Z", "github_url": github_url}
