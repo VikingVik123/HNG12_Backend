@@ -1,4 +1,4 @@
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Request
 from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
 import requests
@@ -38,8 +38,11 @@ def is_armstrong(n: int) -> list:
     return ["armstrong" if is_armstrong else "not armstrong", parity]
 
 @app.get("/api/classify-number")
-async def get_number_details(number: str):
+async def get_number_details(request: Request, number: str = None):
     """Get details of a number."""
+    if number is None:
+        return JSONResponse(status_code=400, content={"number": "alphabet", "error": True})
+    
     try:
         x = int(number)
     except ValueError:
