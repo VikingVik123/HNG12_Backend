@@ -47,7 +47,7 @@ def is_armstrong(n: int) -> list:
 async def get_number_details(request: Request, number: str = None):
     """Get details of a number."""
     if number is None:
-        return JSONResponse(status_code=400, content={"number": request, "error": True})
+        return JSONResponse(status_code=400, content={"number": "alphabet", "error": True})
     
     try:
         x = int(number)
