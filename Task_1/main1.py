@@ -31,11 +31,17 @@ def digit_sum(n: int) -> int:
     return sum(int(digit) for digit in str(n))
 
 def is_armstrong(n: int) -> list:
-    """Check if a number is an Armstrong number."""
+    """Check if a number is an Armstrong number and return the appropriate properties."""
     digits = [int(digit) for digit in str(n)]
     is_armstrong = n == sum(digit ** len(digits) for digit in digits)
     parity = "odd" if n % 2 != 0 else "even"
-    return ["armstrong" if is_armstrong else "not armstrong", parity]
+    
+    result = []
+    if is_armstrong:
+        result.append("armstrong")
+    result.append(parity)
+    
+    return result
 
 @app.get("/api/classify-number")
 async def get_number_details(request: Request, number: str = None):
