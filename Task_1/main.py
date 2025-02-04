@@ -26,7 +26,8 @@ def is_armstrong(n: int) -> list:
     """Check if a number is an Armstrong number and return the appropriate properties."""
     abs_n = abs(n)  # Work with absolute value for the Armstrong check
     digits = [int(digit) for digit in str(abs_n)]  # work with absolute value of n
-    is_armstrong = n == sum(digit ** len(digits) for digit in digits)
+    # Armstrong check works on the absolute value of the number
+    is_armstrong = abs_n == sum(digit ** len(digits) for digit in digits)
     parity = "odd" if n % 2 != 0 else "even"
     
     result = []
