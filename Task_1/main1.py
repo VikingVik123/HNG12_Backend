@@ -50,7 +50,7 @@ async def get_number_details(request: Request, number: str = None):
         return JSONResponse(status_code=400, content={"number": "alphabet", "error": True})
     
     try:
-        x = int(number)
+        x = abs(int(number))
     except ValueError:
         return JSONResponse(status_code=400, content={"number": number, "error": True})
 
