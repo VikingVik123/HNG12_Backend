@@ -1,5 +1,5 @@
 from fastapi import FastAPI, HTTPException, Request
-from fastapi.responses import JSONResponse
+from fastapi.responses import JSONResponse, Response
 from fastapi.middleware.cors import CORSMiddleware
 import requests
 
@@ -42,6 +42,16 @@ def is_armstrong(n: int) -> list:
     result.append(parity)
     
     return result
+
+@app.options("/{path:path}")
+async def options_handler():
+    """Handle preflight OPTIONS requests."""
+    headers = {
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
+        "Access-Control-Allow-Headers": "Content-Type, Authorization",
+    }
+    return Response(status_code=204, headers=headers)
 
 @app.get("/api/classify-number")
 async def get_number_details(request: Request, number: str = None):
