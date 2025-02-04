@@ -24,7 +24,8 @@ def digit_sum(n: int) -> int:
 
 def is_armstrong(n: int) -> list:
     """Check if a number is an Armstrong number and return the appropriate properties."""
-    digits = [int(digit) for digit in str(abs(n))]  # work with absolute value of n
+    abs_n = abs(n)  # Work with absolute value for the Armstrong check
+    digits = [int(digit) for digit in str(abs_n)]  # work with absolute value of n
     is_armstrong = n == sum(digit ** len(digits) for digit in digits)
     parity = "odd" if n % 2 != 0 else "even"
     
