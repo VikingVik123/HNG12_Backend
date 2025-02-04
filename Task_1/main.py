@@ -1,17 +1,9 @@
-from fastapi import FastAPI
-from fastapi.responses import JSONResponse
-from fastapi.middleware.cors import CORSMiddleware
+from flask import Flask, jsonify, request
+from flask_cors import CORS
 import requests
 
-app = FastAPI()
-
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
+app = Flask(__name__)
+CORS(app)
 
 def is_prime(n: int) -> bool:
     """Check if a number is prime."""
@@ -31,27 +23,47 @@ def digit_sum(n: int) -> int:
     return sum(int(digit) for digit in str(n))
 
 def is_armstrong(n: int) -> list:
-    """Check if a number is an Armstrong number."""
+    """Check if a number is an Armstrong number and return the appropriate properties."""
     digits = [int(digit) for digit in str(n)]
     is_armstrong = n == sum(digit ** len(digits) for digit in digits)
     parity = "odd" if n % 2 != 0 else "even"
-    return ["armstrong" if is_armstrong else "not armstrong", parity]
+    
+    result = []
+    if is_armstrong:
+        result.append("armstrong")
+    result.append(parity)
+    
+    return result
 
-@app.get("/")
-async def get_number_details(x: int):
+@app.route("/api/classify-number", methods=["GET"])
+def get_number_details():
     """Get details of a number."""
-
-    url =  f"http://numbersapi.com/{x}"
-    number = x
-    sum = digit_sum(x)
+    number = request.args.get('number')
+    
+    if number is None:
+        return jsonify({"number": "alphabet", "error": True}), 400
+    
     try:
-        fun_fact = requests.get(url).text  # Get text from API response
+        x = abs(int(number))
+    except ValueError:
+        return jsonify({"number": number, "error": True}), 400
+
+    url = f"http://numbersapi.com/{x}"
+    sum_of_digits = digit_sum(x)
+    
+    try:
+        fun_fact = requests.get(url).text
     except requests.RequestException:
         fun_fact = "Error fetching fact"
 
-    return JSONResponse(content={"number": number, 
-                                 "is_prime": is_prime(x),
-                                 "is_perfect": is_perfect(x),
-                                 "properties": is_armstrong(x),
-                                 "digit_sum": sum,
-                                 "fun_fact": fun_fact})
+    return jsonify({
+        "number": x,
+        "is_prime": is_prime(x),
+        "is_perfect": is_perfect(x),
+        "properties": is_armstrong(x),
+        "digit_sum": sum_of_digits,
+        "fun_fact": fun_fact
+    })
+
+if __name__ == "__main__":
+    app.run(debug=True)
